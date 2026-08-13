@@ -26,7 +26,6 @@ const VARIATIONS = [A_VARIATION, B_VARIATION];
 const initialStepsState = (() => {
   const steps = {};
   const song = generateSong();
-  console.log(song);
   for (let track = 0; track < 16; track++) {
     for (let instrument = 0; instrument < 12; instrument++) {
       PARTS.forEach(part => {

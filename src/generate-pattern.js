@@ -3,13 +3,6 @@ const patterns = { "ONE AND SEVEN & FIVE AND THIRTEEN": { "BD": [1, 7], "SN": [5
 
 export function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min }
 export function generateSong() {
-    for (const instrument in clean["instrumentState"]) {
-        for (const param in clean["instrumentState"][instrument]) {
-            clean["instrumentState"][instrument][param] = (param == "selector") ? randInt(0, 1) : randInt(20, 80)
-        }
-    }
-    clean["tempo"] = randInt(30, 293)
-    clean["fineTempo"] = randInt(-6, 6)
     const songs = Object.keys(patterns)
     const randomTitle = songs[randInt(0, songs.length - 1)]
     var song = patterns[randomTitle]
