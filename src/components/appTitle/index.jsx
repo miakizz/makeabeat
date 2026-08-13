@@ -54,29 +54,36 @@ const styles = {
   }
 };
 
-const TitleText = React.memo(props => {
-  const { text } = props;
-  // Split the text by the e character and re-add them but with rotation applied
-  const eSplit = text.split("e");
-  const result = eSplit.reduce((acc, cur, idx) => {
-    if (acc === null) {
-      return [cur];
-    }
-    const rotatedE = (
-      <span
-        key={idx}
-        style={{
-          display: "inline-block",
-          transformOrigin: "50% 60%",
-          transform: "rotate(-40deg)"
-        }}
-      >
-        e
-      </span>
-    );
-    return [...acc, rotatedE, cur];
-  }, null);
-  return result;
+const TitleText = React.memo(({ text }) => {
+  if (!text) return null;
+
+  // Split the text by the e character and re-add them with a rotated styling.
+  const parts = text.split("e");
+
+  return (
+    <>
+      {parts.flatMap((part, index) => {
+        const nodes = [part];
+
+        if (index < parts.length - 1) {
+          nodes.push(
+            <span
+              key={`e-${index}`}
+              style={{
+                display: "inline-block",
+                transformOrigin: "50% 60%",
+                transform: "rotate(-40deg)"
+              }}
+            >
+              e
+            </span>
+          );
+        }
+
+        return nodes;
+      })}
+    </>
+  );
 });
 
 const AppTitle = props => {
@@ -100,4 +107,20 @@ const AppTitle = props => {
   );
 };
 
+const ComeBack = props => {
+  const { width = 955, height = 151 } = props;
+
+  return (
+    <div style={{ ...styles.wrapper, width, height, top: "40%" }}>
+      <div style={{ ...styles.titleLine, width: width - 20 }} />
+      <div style={styles.titleWrapper}>
+        <div style={styles.titleBig}>
+          <TitleText text="Come back at 8:08" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export { ComeBack };
 export default AppTitle;

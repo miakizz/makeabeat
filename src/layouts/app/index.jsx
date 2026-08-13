@@ -18,6 +18,7 @@ import {
   ConnectedLoadButton,
   ConnectedResetButton
 } from "./connectedComponents";
+import { ComeBack } from 'components/appTitle';
 
 const GithubLink = () => {
   const ref = React.useRef(null);
@@ -155,12 +156,26 @@ const styles = {
     backgroundColor: "black",
     padding: "10px 15px",
     top: -10
+  },
+
+  note: {
+    ...labelGreyLarge,
+    position: "relative",
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+    padding: "10px 15px",
+    top: -5
   }
 };
 
 const AppLayout = React.memo(
   () => {
-    return (
+    const d = new Date();
+    const hour = d.getHours();
+    const min = d.getMinutes();
+    const is808 = (hour == 8 || hour == 20) && min == 8;
+    return is808 ? (
       <div style={styles.pageWrapper}>
         <div style={styles.wrapper}>
           <div style={styles.headerWrapper}>
@@ -168,7 +183,13 @@ const AppLayout = React.memo(
               <ConnectedLoadButton size={35} />
               <ConnectedSaveButton size={35} />
               <ConnectedResetButton size={35} />
+              <div
+                style={styles.note}
+              >
+                Press START to make a beat
+              </div>
             </div>
+
             <a
               href="https://blacklivesmatters.carrd.co"
               rel="noopener"
@@ -207,7 +228,7 @@ const AppLayout = React.memo(
               </a>
             </div>
             <div style={labelGreyLarge}>
-              Made with <Octicon name="heart" /> by{" "}
+              Original sequencer made with <Octicon name="heart" /> by{" "}
               <a
                 style={{ color: grey }}
                 href="http://vincentriemer.com"
@@ -216,11 +237,20 @@ const AppLayout = React.memo(
               >
                 Vincent Riemer
               </a>
+              , hacked with <Octicon name="heart" /> by{" "}
+              <a
+                style={{ color: grey }}
+                href="http://miakizz.quest"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Mia Kiesman
+              </a>
             </div>
             <div>
               <a
                 style={styles.footerText}
-                href="https://github.com/vincentriemer/io-808/issues"
+                href="https://github.com/miakizz/makeabeat/issues"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -230,7 +260,7 @@ const AppLayout = React.memo(
           </div>
         </div>
       </div>
-    );
+    ) : (<ComeBack />);
   },
   () => true
 );

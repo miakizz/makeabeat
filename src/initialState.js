@@ -18,19 +18,22 @@ import {
 } from "store-constants";
 
 import { stepKey, patternLengthKey } from "helpers";
+import { generateSong, randInt } from 'generate-pattern';
 
 const PARTS = [FIRST_PART, SECOND_PART];
 const VARIATIONS = [A_VARIATION, B_VARIATION];
 
 const initialStepsState = (() => {
   const steps = {};
+  const song = generateSong();
+  console.log(song);
   for (let track = 0; track < 16; track++) {
     for (let instrument = 0; instrument < 12; instrument++) {
       PARTS.forEach(part => {
         VARIATIONS.forEach(variation => {
           for (let step = 0; step < 16; step++) {
             const key = stepKey(track, instrument, part, variation, step);
-            steps[key] = false;
+            steps[key] = track == 0 && instrument in song && part == FIRST_PART && variation == A_VARIATION && song[instrument].includes(step);
           }
         });
       });
@@ -50,55 +53,55 @@ const initialRhythmLengthState = (() => {
 
 const initialInstrumentState = {
   [ACCENT]: {
-    level: 0,
+    level: randInt(20, 80),
   },
   [BASS_DRUM]: {
-    level: 75,
-    tone: 50,
-    decay: 50,
+    level: randInt(20, 80),
+    tone: randInt(20, 80),
+    decay: randInt(20, 80),
   },
   [SNARE_DRUM]: {
-    level: 75,
-    tone: 50,
-    snappy: 50,
+    level: randInt(20, 80),
+    tone: randInt(20, 80),
+    snappy: randInt(20, 80),
   },
   [LOW_CONGA_LOW_TOM]: {
-    level: 75,
-    tuning: 50,
-    selector: 1,
+    level: randInt(20, 80),
+    tuning: randInt(20, 80),
+    selector: randInt(0, 1),
   },
   [MID_CONGA_MID_TOM]: {
-    level: 75,
-    tuning: 50,
-    selector: 1,
+    level: randInt(20, 80),
+    tuning: randInt(20, 80),
+    selector: randInt(0, 1),
   },
   [HI_CONGA_HI_TOM]: {
-    level: 75,
-    tuning: 50,
-    selector: 1,
+    level: randInt(20, 80),
+    tuning: randInt(20, 80),
+    selector: randInt(0, 1),
   },
   [CLAVES_RIMSHOT]: {
-    level: 75,
-    selector: 1,
+    level: randInt(20, 80),
+    selector: randInt(0, 1),
   },
   [MARACAS_HANDCLAP]: {
-    level: 75,
-    selector: 1,
+    level: randInt(20, 80),
+    selector: randInt(0, 1),
   },
   [COWBELL]: {
-    level: 75,
+    level: randInt(20, 80),
   },
   [CYMBAL]: {
-    level: 75,
-    tone: 50,
-    decay: 50,
+    level: randInt(20, 80),
+    tone: randInt(20, 80),
+    decay: randInt(20, 80),
   },
   [OPEN_HIHAT]: {
-    level: 75,
-    decay: 50,
+    level: randInt(20, 80),
+    decay: randInt(20, 80),
   },
   [CLSD_HIHAT]: {
-    level: 75,
+    level: randInt(20, 80),
   },
 };
 
@@ -130,8 +133,8 @@ export default {
   selectedPlayFillPattern: 0,
   fillScheduled: false,
 
-  tempo: 135,
-  fineTempo: 0,
+  tempo: randInt(30, 293),
+  fineTempo: randInt(-6, 6),
 
   currentStep: 0,
 

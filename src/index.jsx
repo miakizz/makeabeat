@@ -11,9 +11,8 @@ window.process = {
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 
-import { store, persistor } from "store";
+import { store } from "store";
 import AppLayout from "layouts/app";
 import { KnobOverlayManager } from "components/knob/overlay";
 
@@ -34,7 +33,6 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
         <KnobOverlayManager>
           <div style={{ width: "100%", height: "100%" }}>
             <React.Suspense fallback={null}>
@@ -43,7 +41,6 @@ const App = () => {
             <AppLayout />
           </div>
         </KnobOverlayManager>
-      </PersistGate>
     </Provider>
   );
 };
