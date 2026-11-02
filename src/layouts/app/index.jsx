@@ -46,10 +46,18 @@ const GithubLink = () => {
 // layout constants
 const APP_WIDTH = 1400;
 const APP_HEIGHT = 800;
-const APP_PADDING = 40;
 
 const HEADER_HEIGHT = 50;
 const FOOTER_HEIGHT = 30;
+const LAYOUT_HEIGHT = APP_HEIGHT + HEADER_HEIGHT + FOOTER_HEIGHT;
+const VIEWPORT_GUTTER = 16;
+
+const getViewportScale = () =>
+  Math.min(
+    (window.innerWidth - VIEWPORT_GUTTER * 2) / APP_WIDTH,
+    (window.innerHeight - VIEWPORT_GUTTER * 2) / LAYOUT_HEIGHT,
+    1
+  );
 
 const TOP_BOTTOM_DIVIDER_HEIGHT = 3;
 const TOP_HEIGHT = Math.ceil(APP_HEIGHT * 0.64) - TOP_BOTTOM_DIVIDER_HEIGHT * 2;
@@ -67,19 +75,16 @@ const styles = {
     position: "relative",
     width: "100%",
     height: "100%",
-    minWidth: APP_WIDTH + APP_PADDING,
-    minHeight: APP_HEIGHT + HEADER_HEIGHT + FOOTER_HEIGHT + APP_PADDING
+    overflow: "hidden"
   },
 
   wrapper: {
     position: "absolute",
     width: APP_WIDTH,
-    height: APP_HEIGHT + HEADER_HEIGHT + FOOTER_HEIGHT,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    margin: "auto",
+    height: LAYOUT_HEIGHT,
+    top: "50%",
+    left: "50%",
+    transformOrigin: "center center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -172,14 +177,28 @@ const styles = {
 
 const AppLayout = React.memo(
   () => {
+    const [viewportScale, setViewportScale] = React.useState(getViewportScale);
+
+    React.useEffect(() => {
+      const updateScale = () => setViewportScale(getViewportScale());
+      window.addEventListener("resize", updateScale);
+      updateScale();
+      return () => window.removeEventListener("resize", updateScale);
+    }, []);
+
     const d = new Date();
     const hour = d.getHours();
     const min = d.getMinutes();
-    //const is808 = (hour == 8 || hour == 20) && min == 8;
-    const is808 = true;
+    const is808 = (hour == 8 || hour == 20) && min == 8;
+    //const is808 = true;
     return is808 ? (
       <div style={styles.pageWrapper}>
-        <div style={styles.wrapper}>
+        <div
+          style={{
+            ...styles.wrapper,
+            transform: `translate(-50%, -50%) scale(${viewportScale})`
+          }}
+        >
           <div style={styles.headerWrapper}>
             <div style={styles.saveLoadClearWrapper}>
               <ConnectedLoadButton size={35} />
