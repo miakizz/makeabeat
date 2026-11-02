@@ -4,6 +4,7 @@ import WAAClock from "waaclock";
 
 let audioCtx = undefined;
 let clock = undefined;
+let outputNode = undefined;
 
 function triggerSilentAudio(audioCtx) {
   const buffer = audioCtx.createBuffer(1, 1, 22050);
@@ -23,6 +24,11 @@ function triggerSilentAudio(audioCtx) {
 const AudioCtxContext = React.createContext({
   getAudioContext: () => audioCtx,
   getClock: () => clock,
+  getOutputNode: () => outputNode,
+  setOutputNode: node => {
+    outputNode = node;
+    return outputNode;
+  },
   requestInit: () => {
     if (audioCtx == null || clock == null) {
       // Fix up for prefixing

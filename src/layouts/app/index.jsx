@@ -16,7 +16,8 @@ import Octicon from "react-octicon";
 import {
   ConnectedSaveButton,
   ConnectedLoadButton,
-  ConnectedResetButton
+  ConnectedResetButton,
+  RecorderButton
 } from "./connectedComponents";
 import { ComeBack } from 'components/appTitle';
 
@@ -174,7 +175,8 @@ const AppLayout = React.memo(
     const d = new Date();
     const hour = d.getHours();
     const min = d.getMinutes();
-    const is808 = (hour == 8 || hour == 20) && min == 8;
+    //const is808 = (hour == 8 || hour == 20) && min == 8;
+    const is808 = true;
     return is808 ? (
       <div style={styles.pageWrapper}>
         <div style={styles.wrapper}>
@@ -183,11 +185,7 @@ const AppLayout = React.memo(
               <ConnectedLoadButton size={35} />
               <ConnectedSaveButton size={35} />
               <ConnectedResetButton size={35} />
-              <div
-                style={styles.note}
-              >
-                Press START to make a beat
-              </div>
+              <RecorderButton/>
             </div>
 
             <a

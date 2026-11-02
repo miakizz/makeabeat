@@ -40,7 +40,9 @@ const Sequencer = React.memo(() => {
     handleTick: tickAction,
     handleBlinkTick: blinkTickAction
   } = useSequencerActions();
-  const { getAudioContext, getClock } = React.useContext(AudioCtxContext);
+  const { getAudioContext, getClock, setOutputNode } = React.useContext(
+    AudioCtxContext
+  );
 
   // Instance Refs ===========
   const previousStoreStateRef = React.useRef(storeState);
@@ -80,6 +82,7 @@ const Sequencer = React.memo(() => {
         // create limiter before output to protect from clipping
         const outputLimiter = new Limiter(audioCtx);
         outputLimiter.connect(audioCtx.destination);
+        setOutputNode(outputLimiter);
 
         // output gain for masterVolume control
         const outputGain = new VCA(audioCtx);
@@ -103,7 +106,7 @@ const Sequencer = React.memo(() => {
         tickAction();
       }, deadline - audioCtx.currentTime);
     },
-    [getAudioContext, getClock, tickAction]
+    [getAudioContext, getClock, setOutputNode, tickAction]
   );
 
   // Effects ===========
